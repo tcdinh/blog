@@ -1,0 +1,15 @@
+<div *ngFor = "let blogPost of blogPosts" class="blogPost">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="blog-header"> <a routerLink="/blog/{{blogPost._id}}" [innerHTML]="blogPost.title"></a> </h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                 <div [innerHTML]="blogPost.content"></div>
+            </div>
+        </div>
+    <button *ngIf="content && title && userService.loggedIn" class='danger' (click)='deletePost()'>Delete</button>
+    <button *ngIf="content && title && userService.loggedIn" class='success' (click)='updatePost()'>Edit</button>
+</div>
+<app-pagination *ngIf="!content && !title" (pageChange)="updateBlogPage($event)"></app-pagination>

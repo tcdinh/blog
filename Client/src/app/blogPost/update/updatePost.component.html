@@ -1,0 +1,21 @@
+<div class="container fill">
+	<div class="row">
+		<div class="col-12 justify-content-center">
+			<form (ngSubmit)="updateBlogPost()">
+				<div class="form-group">
+					<fieldset>
+						<label><h3>Title</h3></label>
+						<div [froalaEditor] [(froalaModel)]="title"></div>
+					</fieldset>
+				</div>
+				<div>
+					<fieldset>
+						<label><h3>Content</h3></label>
+						<div [froalaEditor] [(froalaModel)]="content"></div>
+					</fieldset>
+				</div>
+				<button type="submit">Submit</button>
+			</form>
+		</div>
+	</div>
+</div>
