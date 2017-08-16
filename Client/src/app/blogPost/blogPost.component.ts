@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { BlogPostService } from './blogPost.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaginationComponent } from './pagination/pagination.component';
@@ -13,7 +13,7 @@ export class BlogPostComponent implements OnInit {
     private _id: number;
     public title: string;
     public content: string;
-    public lastIndex: string;
+    @Input() lastIndex: string;
 
     constructor(
         private blogService: BlogPostService,
