@@ -2,7 +2,7 @@
 ## System Requirements
 * Any OS
 * Node.js
-* MongoDB default port
+* MongoDB installed on default port
 
 ## Installation Notes
 1. Use ```NPM install``` where the package.json file is in the root directory.
