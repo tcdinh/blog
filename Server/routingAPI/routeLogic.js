@@ -5,7 +5,6 @@ var express = require('express'),
 
 router.post('/validateUser', function (req, res) {
     var creds = req.body;
-    console.log(creds);
     mongoClient.connect("mongodb://localhost:27017/blogData", function (e, db) {
         if (e) {
             res.send("no connection to db");
@@ -28,15 +27,18 @@ router.get('/blogPosts', function (req, res) {
             res.send("no connection to DB");
         }
         var collection = db.collection('blogPosts');
-        if (req.query.lastIndex) {
-            collection.find({ '_id': { $gt: ObjectId(req.query.lastIndex) } }).sort({ _id: -1 }).limit(5).toArray(function (error, result) {
+        if (req.query.lastIndex && !req.query.single) {
+            console.log('there we go');
+            collection.find({ '_id': { $lt: ObjectId(req.query.lastIndex) } }).sort({ _id: -1 }).limit(5).toArray(function (error, result) {
                 res.json(result);
             });
         }  else if (req.query.single) {
+            console.log("single");
             collection.findOne({ _id: ObjectId(req.query.single) }, function (e, result) {
                 res.json([result]);
             });
         } else {
+            console.log("5 thigns")
             collection.find().sort({ _id: -1 }).limit(5).toArray(function (error, result) {
                 res.json(result);
             });

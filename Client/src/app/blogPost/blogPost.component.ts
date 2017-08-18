@@ -1,7 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { BlogPostService } from './blogPost.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PaginationComponent } from './pagination/pagination.component';
 import { UserService } from '../user/user.service';
 
 @Component({
@@ -9,21 +8,24 @@ import { UserService } from '../user/user.service';
     templateUrl: './blogPost.component.html',
 })
 
-export class BlogPostComponent implements OnInit {
+export class BlogPostComponent {
     private _id: number;
     public title: string;
     public content: string;
-    @Input() lastIndex: string;
+    blogPosts = [];
 
     constructor(
         private blogService: BlogPostService,
         private activeRoute: ActivatedRoute,
         public userService: UserService,
         private router: Router) {
-        this._id = this.activeRoute.snapshot.params['_id'];
-    }
-    blogPosts = [];
-    ngOnInit() {
+            if (this.activeRoute.snapshot.params['_id']) {
+                this._id = this.activeRoute.snapshot.params['_id'];
+            }
+            this.start();
+        }
+
+    start() {
         if (this._id) {
             this.blogService.getBlogPosts(this._id).subscribe(blogPosts => {
                 this.blogPosts = blogPosts;
@@ -33,7 +35,7 @@ export class BlogPostComponent implements OnInit {
         } else {
             this.blogService.getBlogPosts().subscribe(blogPosts => {
                 this.blogPosts = blogPosts;
-                this.lastIndex = blogPosts[4]._id;
+                this.blogService.lastPost = blogPosts[blogPosts.length - 1]._id;
             });
         }
     }

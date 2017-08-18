@@ -6,16 +6,17 @@ import 'rxjs/add/operator/map';
 
 @Injectable()
 export class BlogPostService {
+    lastPost: string;
 
     constructor (private http: Http) {}
 
-    getBlogPosts(single?, lastIndex?) {
+    getBlogPosts(single?) {
         const myParams = new URLSearchParams();
         if (single) {
             myParams.set('single', single);
         }
-        if (lastIndex) {
-            myParams.set('lastIndex', lastIndex);
+        if (this.lastPost) {
+            myParams.set('lastIndex', this.lastPost);
         }
         return this.http.get('/api/blogPosts', {params: myParams})
             .map(response => response.json());

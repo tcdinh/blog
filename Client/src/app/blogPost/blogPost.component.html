@@ -12,4 +12,3 @@
     <button *ngIf="content && title && userService.loggedIn" class='danger' (click)='deletePost()'>Delete</button>
     <button *ngIf="content && title && userService.loggedIn" class='success' (click)='updatePost()'>Edit</button>
 </div>
-<app-pagination *ngIf="!content && !title" (pageChange)="updateBlogPage($event)"></app-pagination>

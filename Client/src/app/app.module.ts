@@ -16,8 +16,8 @@ import { HomeComponent } from './blogPost/home.component';
 import { GalleryComponent } from './gallery/gallery.component';
 import { BlogPostComponent } from './blogPost/blogPost.component';
 import { NewBlogPostComponent } from './blogPost/new/newBlogPost.component';
-import { PaginationComponent } from './/blogPost/pagination/pagination.component';
 import { UpdateBlogPostComponent } from './blogPost/update/updatePost.component';
+import { BlogPostsDirective } from './blogPost/blog-post.directive';
 
 @NgModule({
   declarations: [
@@ -29,8 +29,8 @@ import { UpdateBlogPostComponent } from './blogPost/update/updatePost.component'
     GalleryComponent,
     BlogPostComponent,
     NewBlogPostComponent,
-    PaginationComponent,
-    UpdateBlogPostComponent
+    UpdateBlogPostComponent,
+    BlogPostsDirective
   ],
   imports: [
     BrowserModule,
@@ -41,6 +41,7 @@ import { UpdateBlogPostComponent } from './blogPost/update/updatePost.component'
     FroalaViewModule.forRoot()
   ],
   providers: [ BlogPostService, UserService ],
+  entryComponents: [HomeComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
