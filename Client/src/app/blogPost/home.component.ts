@@ -26,7 +26,6 @@ export class HomeComponent implements AfterViewInit {
         const viewContainerRef = this.blogPosts.viewContainerRef;
         // viewContainerRef.clear();
         const componentRef = viewContainerRef.createComponent(componentFactory);
-        console.log(componentRef);
         // (<BlogPostComponent>componentRef.instance).data = adItem.data;
       }
 

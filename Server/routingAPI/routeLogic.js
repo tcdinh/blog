@@ -48,20 +48,6 @@ router.get('/blogPosts', function (req, res) {
     });
 })
 
-router.get('/skipPost', function (req, res) {
-    var pageNumber = req.query.pageNumber;
-    mongoClient.connect("mongodb://localhost:27017/blogData", function (e, db) {
-        if (e) {
-            res.send("no connection to DB");
-        }
-        var collection = db.collection('blogPosts');
-        collection.find().skip(pageNumber > 0 ? ((pageNumber-1)*5) : 0).sort({ _id: -1 }).limit(5).toArray(function (error, result) {
-            res.json(result);
-        });
-        db.close();
-    });
-})
-
 router.post('/addPost', function (req, res) {
     var body = req.body;
     mongoClient.connect('mongodb://localhost:27017/blogData', function (e, db) {
@@ -103,42 +89,43 @@ router.delete('/deletePost', function (req, res) {
     });
 })
 
-router.post('/images', function (req, res) {
+router.post('/addImage', function (req, res) {
     var body = req.body;
+    mongoClient.connect('mongodb://localhost:27017/blogData', function (e, db) {
+        if (e) {
+            res.send('no connection to DB');
+        }
+        var collection = db.collection('images');
+        collection.insert({ title: body.title, content: body.content }, function (e, response) {
+            res.send("Sent");
+        });
+        db.close();
+    });
+})
+
+router.get('/getImage', function (req, res) {
     mongoClient.connect("mongodb://localhost:27017/blogData", function (e, db) {
         if (e) {
             res.send("no connection to DB");
         }
         var collection = db.collection('images');
-        if (body.index2) {
-            collection.find({ _id: { $gt: parseInt(body.index1), $lt: parseInt(body.index2) } }).toArray(function (error, result) {
+        if (req.query.lastIndex && !req.query.single) {
+            collection.find({ '_id': { $lt: ObjectId(req.query.lastIndex) } }).sort({ _id: -1 }).limit(5).toArray(function (error, result) {
                 res.json(result);
             });
+        }  else if (req.query.single) {
+            console.log("single");
+            collection.findOne({ _id: ObjectId(req.query.single) }, function (e, result) {
+                res.json([result]);
+            });
         } else {
-            collection.findOne({ _id: parseInt(body.index1) }, function (e, result) {
+            console.log("5 thigns")
+            collection.find().sort({ _id: -1 }).limit(5).toArray(function (error, result) {
                 res.json(result);
-            })
+            });
         }
+
         db.close();
     });
-});
-
-router.get('/getBlogPostCount', function (req, res) {
-    var body = req.body;
-    mongoClient.connect("mongodb://localhost:27017/blogData", function (e, db) {
-        if (e) {
-            res.send("no connection to DB");
-        }
-        var collection = db.collection('blogPosts');
-        collection.count(function (e, count) {
-            if (e) {
-                res.send('no count');
-            } else {
-                res.json(count);
-            }
-        });
-        db.close();
-    });
-});
-
+})
 module.exports = router;
